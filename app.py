@@ -44,9 +44,9 @@ encoder = bundle["encoder"]
 
 # Title of the Application 
 st.title(
-    body="Image Classification (Pets)", 
+    body="My First Streamlit App", 
     anchor=False, 
-    help="This app tells you whether your image contains a pet in it or not", 
+    help="This is my first Streamlit App", 
     width="stretch"
 )
 
