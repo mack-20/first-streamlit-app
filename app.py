@@ -3,7 +3,35 @@ from time import sleep
 import json
 import os
 import pickle
+from groq import Groq
+import base64
 import pandas as pd
+
+# Setting up Groq client
+GROQ_API_KEY = "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"
+client = Groq(api_key=GROQ_API_KEY)
+
+def image_classifier_using_qroq(client, image):
+    base64_image = base64.b64encode(image.read()).decode('utf-8')
+    chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            "role": "user",
+            "content": [
+                {"type": "text", "text": "What's in this image?"},
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/jpeg;base64,{base64_image}",
+                    },
+                },
+            ],
+        }
+    ],
+    model="meta-llama/llama-4-scout-17b-16e-instruct",
+    )
+    return chat_completion.choices[0].message.content
+
 
 # Load model and encoder
 with open("student_score_model.pkl", "rb") as pickle_file:
@@ -100,6 +128,9 @@ if st.session_state.form_submitted:
 
     if user_upload:
         st.image(user_upload, caption="Uploaded image")
+        response = image_classifier_using_qroq(client=client, image=user_upload)
+        st.subheader("Image description", divider="blue")
+        st.write(response)
         st.balloons()
 
         # Prediction Section
