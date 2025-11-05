@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Setting up Groq client
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+client = Groq(api_key=os.getenv('GROQ_API_KEY'))
 
 def image_classifier_using_qroq(client, image):
     base64_image = base64.b64encode(image.read()).decode('utf-8')
